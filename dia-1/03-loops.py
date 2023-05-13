@@ -3,12 +3,12 @@
    # print("el mes es")
     #print(mes)
 
-#for numero in range(5):
-   # print(numero)
-#for number in range(2,10):
-    #print(number)
-#for num in range(2,10,3):
-    #print(num)
+for numero in range(5):
+    print(numero)
+for number in range(2,10):
+    print(number)
+for num in range(2,10,3):
+    print(num)
 
 #utilizando el metodo range
 

@@ -9,7 +9,7 @@ print (notas[0])
 #se utiliza el metodo append para agregar al final del array
 #en javascript es push, python es append
 notas.append(40)
-
+#del sirve para elminar cualquier variable
 del notas[1]
 #pop quita de la lista, pero te devuelve el contenido
 notas.pop(1)
