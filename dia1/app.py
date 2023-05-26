@@ -42,7 +42,7 @@ def products():
             "data": response
         }
     elif request.method == "POST":
-        json = request.get_json()
+        json = request.json
         record = ProductsModel(
             name=json['name'],
             stock=json['stock'],
