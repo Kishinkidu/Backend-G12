@@ -2,3 +2,5 @@
 entorno_*
 #python cache
 *.pyc
+
+.env
