@@ -4,7 +4,7 @@ from models.Ususarios_model import UsuarioModel
 from dtos.usuario_dto import UsuariosResponseDto, UsuariosRequestDto
 
 class UsuarioController(Resource):
-    #cuando yo heredo la clase Resource ahora los metodos que yo cree con el mismo nombre que un metodo HTTP ( GET, POST , PUT , DELETE) entocnes ingresaran a esos metodos
+    #cuando yo heredo la clase Resource ahora los metodos que yo cree con el mismo nombre que un metodo HTTP ( GET, POST , PUT , DELETE) entonces ingresaran a esos metodos
     def get(self):
         resultado = conexion.session.query(UsuarioModel).all()
         #many = True > el dtoo iterara el arreglo o listaa y convertira en cada uno de ellos
@@ -48,4 +48,4 @@ class UsuarioController(Resource):
             return{
                 "message":"Error al crear el usuario",
                 "content" : error.args # args > argumentos (porque fallo)
-            }, 400 #bad request (mala solicitud por parte del cliente)
+            }, 400 # bad request (mala solicitud por parte del cliente) 

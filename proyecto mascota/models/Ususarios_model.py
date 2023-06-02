@@ -9,7 +9,7 @@ class UsuarioModel(conexion.Model):
     nombre = Column(type_=types.Text, nullable=False)
     apellido = Column(type_= types.Text)
     correo = Column(type_= types.Text, unique=True, nullable=True)
-    dni = Column(type_=types.Text, unique=True ,nullable=True)
+    dni = Column(type_=types.Text, unique=True ,nullable=True, unique=True)
 
 # como se llamara la tabla en la base de datos , sii no le ponemos este nombre sera el mismo que la clase(ususario)
     __tablename__ ="usuarios"
