@@ -7,7 +7,7 @@ from models.usuario_model import Usuario
 from models.publicacion_model import Publicacion
 from controllers.usuario_controller import RegistroController, PerfilController, LoginController
 from flask_jwt_extended import JWTManager
-from controllers.publicacion_controller import PublicacionesController
+from controllers.publicacion_controller import PublicacionesController,PublicacionController
 from datetime import timedelta
 
 from os import environ # muestra las variables de entorno
@@ -19,7 +19,33 @@ api=Api(app)
 app.config["JWT_SECRET_KEY"] = environ.get("SECRET_KEY")
 app.config["JWT_ACCESS_TOKEN_EXPIRES"] =timedelta(hours = 1, minutes = 30)
 #busca en la vvariable config  la variable JWT_SECRET_KEY > Sera el secreto por el cual se generaran los tokens
-JWTManager(app)
+jwt = JWTManager(app)
+
+@jwt.unauthorized_loader
+def tokenRequerida(razon):
+    print(razon)
+    
+    return{
+        "message" : "Se necesita una token para realizar esta accion"
+    },401
+
+@jwt.invalid_token_loader
+def tokenInvalida(reason):
+    print (reason)
+    message= ""
+    if reason == 'Not enough segments':
+        message = 'La token tiene que tener 3 segmentos, el header, payload y signature'
+        
+    elif reason == "Invalid header string: 'utf-8' codec can't decode byte 0xc7 in position 0: invalid continuation byte":
+        message = 'Token invalida'
+
+    elif reason =='Signature verification failed':
+        message = 'Esta token no pertenece a esta API'
+
+    return {
+        "message ": message
+    },401
+
 
 
 #el metodo .get de los dicionarios intentara buscar esa llave y si no existe, retornara None, a diferencia de las [] (llaves ) que si no encuentra emitira un error de tipo KeyError.
@@ -36,5 +62,6 @@ api.add_resource(RegistroController,"/registro-usuario")
 api.add_resource(LoginController,"/login")
 api.add_resource(PerfilController,"/perfil")
 api.add_resource(PublicacionesController,"/publicaciones")
+api.add_resource(PublicacionController, "/publicacion/<int:id>")
 if __name__=="__main__":
     app.run(debug=True)

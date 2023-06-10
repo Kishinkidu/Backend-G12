@@ -33,14 +33,91 @@ class PublicacionesController(Resource):
 
     def get(self):
         queryParams = request.args
-        usuarios = conexion.session.query(Usuario).filter_by(**queryParams).all()
+        #solamente necesito el ID
+        #with_entities > especificar que colimnnas queremos extraer 
+        #con el uso de with_entitties
+        #SELECT id,nombre  FROM Usuarios
+        data = conexion.session.query(Usuario) .with_entities(Usuario.id).filter_by(**queryParams).all()
 
-        print(usuarios)
+        usuariosIds = []
+        for id in data:
+            usuariosIds.append(id[0])
         
-        resultado = conexion.session.query(Publicacion).all()
+        #data= { "nombre ":"juan"}
+        #data.k
+
+        #SELECT * FROM publicaciones WHERE usuariosId = ...
+        #SELECT * FROM publicaciones WHERE usuario_id IN (1,2);
+        # https://www.postgresql.org/docs/current/functions-subquery.html#FUNCTIONS-SUBQUERY-IN
+
+        resultado = conexion.session.query(Publicacion).filter(Publicacion.usuarioId.in_(usuariosIds)).all()
         
         dto = PublicacionResponseDto(many = True)
         publicaciones = dto.dump(resultado)
         return {
             "content" : publicaciones
         }
+    
+class PublicacionController(Resource):
+    #jwt se encarga de 1. Validar que la token sea nuestra(concuerda el secreto),2. De que la token aun no expiro,3. sea valida
+    @jwt_required()
+    #/publicacion/<int:id>
+    def put(self, id):
+        try:
+            usuarioId =get_jwt_identity()
+
+            publicacion = conexion.session.query(Publicacion).filter_by(id = id, usuarioId = usuarioId).first()
+            #ublicacion = conexion.session.query(Publicacion).filter(Publicacion.id == id, Publicacion.usuarioId == usuarioId).first()
+            if not publicacion:
+                raise Exception("Publicacion no existe")
+            dto= PublicacionRequestDto()
+            dataValidada = dto.load(request.json)
+            #Primera forma
+            # publicacion.titulo = dataValidada.get("titulo")
+            # publicacion.descripcion = dataValidada.get("descripcion")
+            # publicacion.habilitado = dataValidada.get("habilitado")
+
+
+            #segunda forma
+            conexion.session.query(Publicacion).filter_by(id = id, usuarioId=usuarioId).update(dataValidada)
+
+            #Para guardar los cambios
+            conexion.session.commit()
+            resultado = PublicacionResponseDto().dump(publicacion)
+
+            return{
+                    "message" :"Publicacion actualizada exitosamente",
+                    "content" : resultado
+            }, 201
+        except Exception as e:
+            return{
+                "message":"error al intentar actualizar",
+                "content": e.args
+            }, 400
+        
+    @jwt_required()
+
+    def delete(self,id):
+        try:
+            usuarioId = get_jwt_identity()
+            publicacionesEliminadas= conexion.session.query(Publicacion).filter_by(id=id, usuarioId=usuarioId).delete()
+
+            if publicacionesEliminadas == 0:
+                raise Exception("No se encontro la publicacion a eliminar")
+            conexion.session.commit()
+
+            #segunda forma
+            # publicacionEncontrada = conexion.session.query(Publicacion).filter_by(id=id, usuarioId=usuarioId).first()
+
+            # if not publicacionEncontrada:
+            #     raise Exception("no se encontro la publicacion a eliminar")
+            # conexion.session.delete(publicacionEncontrada)
+            # conexion.session.commit()
+            return{
+                "message":"Publicacion eliminada exitosamente"
+            },201
+        except Exception as e:
+            return{
+                "message":"Error al eliminar la publicacion",
+                "content": e.args
+            },400
