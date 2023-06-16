@@ -9,6 +9,7 @@ class Categoria(models.Model):
     nombre = models.TextField(null=False, unique=True)
     estante = models.TextField()
     piso = models.TextField()
+    habilitado = models.BooleanField(default=True)
 
     class Meta:
         # https://docs.djangoproject.com/en/4.2/ref/models/options/
@@ -27,7 +28,7 @@ class Libro(models.Model):
     titulo = models.TextField(null=False)
     fechaPublicacion = models.DateTimeField(db_column="fecha publicacion")
     unidades = models.IntegerField(default=0)
-    sinopsos = models.TextField()
+    sinopsis = models.TextField()
     # on_delete > sirve para indicar que va a suceder cuando se intente eliminar una categoria
     # CASCADE > elminara la categoria y luego todos sus libros
     # SET_NULL > eliminara la categoria y a los libros les cambiara el valor a NULL en la bd
