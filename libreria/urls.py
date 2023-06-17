@@ -16,8 +16,12 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from drf_yasg.views import get_schema_view
+from drf_yasg import openapi
+esquema = get_schema_view(openapi.Info(title="libreria API", default_version="v1", description="API USANDO POSTGRES E IMAGENES",terms_of_service="https://www.google.com",contact=openapi.Contact(name="Erick Revoredo", email="erick.revoredo58@gmail.com")))
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path("", include("gestion.urls")),
+    path("documentacion", esquema.with_ui("swagger")),
 ]

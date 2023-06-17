@@ -38,7 +38,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     "gestion",
-    "rest_framework",
+    "rest_framework", # required for serving swagger ui's css/js files
+    'drf_yasg'
 ]
 
 MIDDLEWARE = [
@@ -127,3 +128,11 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# https://docs.djangoproject.com/en/4.2/ref/settings/#media-root
+# MEDIA_ROOT >  sirve para indicar donde se guardara los archivos subidos
+MEDIA_ROOT= BASE_DIR / 'imagenes'
+
+#MEDIA_URL > sirve para indicar el endpoint para devolver nuestros archivos 
+# es el endpoint en el cual se podra acceder al archivo3
+MEDIA_URL = 'imagenes/'

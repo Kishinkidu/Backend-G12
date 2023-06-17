@@ -3,8 +3,8 @@ from rest_framework.response import Response
 from rest_framework.request import Request
 from django.http  import HttpRequest
 from rest_framework.views import APIView
-from .selializers import CategoriaSerializer, LibroSerializer
-from .models import Categoria
+from .selializers import CategoriaSerializer, LibroSerializer, AutorSerializer, LibroAutorSerializer, AutorConLibrosSerializer
+from .models import Categoria, Libro, Autor
 from rest_framework import status
 
 @api_view(["GET", "POST"])
@@ -127,7 +127,106 @@ def alternarEstadoCategoria(request, id):
 
 class librosController(APIView):
     def post(self, request: Request|HttpRequest):
-        
-        return Response(data={
-            "message":"Libro creado exitosamente"
+        serializador = LibroSerializer(data = request.data)
+        validado = serializador.is_valid()
+        if validado:
+            serializador.save()
+            return Response(data={
+                "message":"Libro creado exitosamente"
+            }, status= status.HTTP_201_CREATED)
+        else:
+            return Response(data={
+                "message":"Error al crear el libro",
+                "content" : serializador.errors
+            },status = status.HTTP_400_BAD_REQUEST)
+    def get(self,request:Request|HttpRequest):
+        print(request.query_params)
+        # https://docs.djangoproject.com/en/4.2/topics/db/queries/#field-lookups
+        # contains > hace match con palabras sensibles a mayusculas
+        # icontains > no respeta mays ni minus
+        parametros = {}
+        if request.query_params.get("titulo"):
+            parametros["titulo__icontains"]=request.query_params.get("titulo")
+
+        if request.query_params.get("anio"):
+            parametros["fechaPublicacion__year"]=request.query_params.get("anio")
+
+        libros =Libro.objects.filter(**parametros).all()
+ 
+        resultado = LibroSerializer(instance=libros, many = True)
+        return Response(data = {
+            "content": resultado.data
         })
+    
+class AutoresController(APIView):
+    def post (self, request: Request|HttpRequest):
+        serializador= AutorSerializer(data= request.data)
+        try:
+            serializador.is_valid(raise_exception=True)
+            serializador.save()
+
+            return Response(data={
+                "message":"Autor creado exitosamente"
+            },status= status.HTTP_201_CREATED)
+        
+        except Exception as err:
+            return Response(data = {
+                "message":"Error al crear el autor",
+                "content": err.args
+            },status= status.HTTP_400_BAD_REQUEST)
+        
+    def get(self, request:Request|HttpRequest):
+        autores = Autor.objects.all()
+        serializador = AutorSerializer(instance=autores, many= True)
+
+        return Response(data={
+            "content": serializador.data
+        })
+    
+class AutoresLibrosController(APIView):
+    def post(self, request:Request|HttpRequest):
+        return Response(data={
+            "message":"Autor vinculado con el libro exitosamente"
+        })
+    
+class LibroAutoresController(APIView):
+    def post(self,request:Request|HttpRequest):
+        serializador = LibroAutorSerializer(data = request.data)
+        try:
+            serializador.is_valid(raise_exception=True)
+            dataValidada = serializador.validated_data
+            autorId= dataValidada.get("autorId")
+            libroId= dataValidada.get("libroId")
+            libro = Libro.objects.filter(id=libroId).first()
+            if not Libro:
+                raise Exception('Libro no existe')
+            autor= Autor.objects.filter(id=autorId).first()
+            if not Autor:
+                raise Exception('autor no existe')
+            
+            autor.libros.add(libro)
+            autor.save()
+
+            return Response (data = {
+                "message": "autor vinculado con el libro exitosamente"
+            }, status = status.HTTP_201_CREATED)
+        
+        except Exception as err:
+            return Response(data={
+                "message":"Error al crear el libro con el autor",
+                "content": err.args
+            }, status= status.HTTP_400_BAD_REQUEST)
+        
+@api_view(["GET"])
+def mostrarInforAutor(request:Request|HttpRequest, id:int):
+    autor = Autor.objects.filter(id=id).first()
+    if not autor:
+        return Response(data={
+            "message":"Autor no existe"
+        }, status=status.HTTP_400_BAD_REQUEST)
+    serializador = AutorConLibrosSerializer(instance=autor)
+    # cuando yo uso el atributo libros se hace un inner join entre la tabla autores y la tabla autores_libro
+    print(autor.libros.all())
+    return Response(data={
+        "content": serializador.data
+    })
