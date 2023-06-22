@@ -11,7 +11,7 @@ python manage.py startapp [nombre de app] < crea una palicacion en nuestro proye
 python manage.py makemigrations [nombre de aplicacion] -n "[nombre]" < CREA la MIGRACION en la aplicacion indicada
 
 
-
+opc. python manage.py makemigrations [nombre de aplicacion] --name [nombre del proyecto]
 
 1: python manage.py makemigrations [nombre de aplicacion] -n "[comentario]" < CREA la MIGRACION en la aplicacion indicada
 2: python manage.py migrate < srive para ejecutar(correr) las migraciones faltantes en neustro proyecto
