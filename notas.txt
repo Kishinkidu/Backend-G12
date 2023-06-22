@@ -8,7 +8,7 @@ python manage.py runserver < iniciara el servidro de django
 python manage.py showmigrations < mostrara todas las migracione en nuestro proyecto y con [x] las que nya se ejecutaron en la db
 python manage.py migrate < srive para ejecutar(correr) las migraciones faltantes en neustro proyecto
 python manage.py startapp [nombre de app] < crea una palicacion en nuestro proyecto
-python manage.py makemigrations [nombre de aplicacion] -n "[comentario]" < CREA la MIGRACION en la aplicacion indicada
+python manage.py makemigrations [nombre de aplicacion] -n "[nombre]" < CREA la MIGRACION en la aplicacion indicada
 
 
 
