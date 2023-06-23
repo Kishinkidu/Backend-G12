@@ -6,18 +6,17 @@ from django.utils.html import mark_safe
 
 # Create your models here.
 class Imagen (models.Model):
-        nombre= models.TextField()
-        ubicacion = models.ImageField()
+        nombre = models.ImageField()
 
         def __str__(self):
                 #sirvef para indicar como se mostrar la instancia al momento de ser solicitada
                 return self.nombre
         
-        def ubicacion_tag(self):
-                return mark_safe('<img src="/imagenes/%s" width="150" height="150"/>' %(self.ubicacion))
+        def nombre_tag(self):
+                return mark_safe('<img src="/imagenes/%s" width="150" height="150"/>' %(self.nombre))
         
         #sirvef para indicar el nombre de este "atributo"
-        ubicacion_tag.short_description= "imagen de la ubicacion"
+        nombre_tag.short_description= "Figura de la imagen"
 
         class Meta:
                 db_table= "imagenes"
