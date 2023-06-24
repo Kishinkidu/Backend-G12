@@ -12,3 +12,17 @@ class CategoriaSerializer(serializers.ModelSerializer):
     class Meta:
         model = Categoria
         fields = "__all__"
+
+class ProductoSerializer (serializers.ModelSerializer):
+    imagen= serializers.FileField()
+    class Meta:
+        model = Producto
+        fields ="__all__"
+
+class ProductoSegundoMetodoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model= Producto
+        fields="__all__"
+
+class UploadImageSerializer(serializers.Serializer):
+    imagen= serializers.ImageField()
