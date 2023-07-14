@@ -1,0 +1,22 @@
+{
+  "name": "backend-g12",
+  "version": "1.0.0",
+  "description": "Toda la informacion que se necesite o encontraras aqui, el repositorio se dividira en semanas, donde cada semana se creara una rama.\r - semana 01: <a href=\"https://google.com\">Link</a>\r - semana 02: NO DISPONIBLE\r - semana 03: NO DISPONIBLE\r - semana 04: NO DISPONIBLE\r - semana 05: NO DISPONIBLE\r - semana 06: NO DISPONIBLE\r - semana 07: NO DISPONIBLE\r - semana 08: NO DISPONIBLE\r - semana 09: NO DISPONIBLE\r - semana 10: NO DISPONIBLE",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "dev": "dotenv -e .env -- nodemon ./src/index.js",
+    "start": " node ./src/index.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.18.2"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.17",
+    "dotenv-cli": "^7.2.1",
+    "nodemon": "^3.0.1"
+  }
+}
