@@ -1,13 +1,16 @@
-# repositorio de codigo backend 
+# Repositorio de CodiGo Backend 12
+
 ### Este sera el archivo de documentacion de nuestro repositorio
-Toda la informacion que se necesite o encontraras aqui, el repositorio se dividira en semanas, donde cada semana se creara una rama.
-- semana 01: <a href="https://google.com">Link</a>
-- semana 02: NO DISPONIBLE
-- semana 03: NO DISPONIBLE
-- semana 04: NO DISPONIBLE
-- semana 05: NO DISPONIBLE
-- semana 06: NO DISPONIBLE
-- semana 07: NO DISPONIBLE
-- semana 08: NO DISPONIBLE
-- semana 09: NO DISPONIBLE
-- semana 10: NO DISPONIBLE
+
+Toda la informacion que necesites la podras encontrar aca, el repositorio se dividira en semanas, donde cada semana sera una rama
+
+- Semana 01: <a href="https://google.com">LINK </a>
+- Semana 02: NO DISPONIBLE
+- Semana 03: NO DISPONIBLE
+- Semana 04: NO DISPONIBLE
+- Semana 05: NO DISPONIBLE
+- Semana 06: NO DISPONIBLE
+- Semana 07: NO DISPONIBLE
+- Semana 08: NO DISPONIBLE
+- Semana 09: NO DISPONIBLE
+- Semana 10: NO DISPONIBLE
