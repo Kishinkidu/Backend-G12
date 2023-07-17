@@ -1,19 +1,30 @@
-docker build --tag <NOMBRE_TAG>  . >ubicacion> construira la imagen descargandose los recursos necesarios
-docker images > nos listara las imagenes guardades en docker
-docker tag prueba-node:latest prueba-node:v1.0.0 > agregamos una etiqueta a la ultima version y esto sirve para mantener un historia de imagenes en nuestro docker
+docker build --tag <NOMBRE_TAG> ubicacion           > construira la imagen descargandose los recursos necesarios
 
-docker rmi prueba-node:latest > eliminamos la imagen
+docker images                                       > listara las imagenes que tenemos actualmente en nuestro docker
 
-docker run --publish PUERTO_EXTERNO:PUERTO_INTERNO NOMBRE_IMAGEN > correr la imagen exponiendo un puerto en particular
+docker tag prueba-node:latest prueba-node:v1.0.0    > agregamos una etiqueta en la ultima version y esto sirve para mantener un historial de imagenes en nuestro docker
 
-si a run le ponemos --detach o --d hara que se ejecute en segundo plano
+docker rmi prueba-node:latest                       > eliminamos la imagen 
+docker image rm prueba-node                         > es lo mismo que rmi
 
-docker ps > listara los contenedores > un conjunto de imagenes que se estan ejecutando o no
+docker run --publish PUERTO_EXTERNO:PUERTO_INTERNO NOMBRE_IMAGEN > correr nuestra imagen exponiendo un puerto en particular
+si al run le ponemos --detach o -d hara que se ejecute en segundo plano
 
-docker ps --all > muestra la lista del historial de imagenes ejecutados y sin ejecutar
+docker ps > listara los contenedores                > un conjunto de imagenes que se estan ejecutando o no
 
-docker restar ID| NAME > reiniciar un contenedor que no esta iniciado
+docker restart ID | NAME                            > reiniciar un contenedor que no esta activo
 
-nota : un contenedor puede tener mas de una imagen y es el encargado de ejecutar las imagenes
+docker exec --interactive  --tty CONTAINER_ID COMAND > sirve para ejecutar un comando en nuestro contenedor , los comandos son comandos basados en linux
 
-docker exec --interactive --tty CONTAIER_ID COMAND_UNIX < sirve para ejecutar un comando en el contenedor, los comandos son basados en linux
+docker stop ID_CONTENEDOR | NOMBRE_CONTENEDOR       > parar la ejecucion de ese contenedor
+
+docker create --name NOMBRE_CONTENEDOR IMAGEN_BASE  > crea un contenedor basandose en la imagen y adicional se le coloca el NOMBRE
+
+docker logs NOMBRE_CONTENEDOR | ID_CONTENEDOR       > mostrara los logs de nuestro contenedor, adicional podemos colocar la opcion --follow sera mantenernos contectados a nuestro contenedor para escuchar los nuevos logs
+
+docker start NOMBRE_CONTENEDOR | ID_CONTENEDOR      > inicializa el contenedor
+
+NOTA: un contenedor puede tener mas de una imagen y es el encargado de ejecutar las imagenes
+
+
+docker-compose up                                   > levantar nuestras imagenes declaradas en el docker-compose file
